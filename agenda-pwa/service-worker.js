@@ -48,4 +48,10 @@ self.addEventListener('activate', evento => {
 // Cada vez que la app pide cualquier recurso.
 // Estrategia "Cache First":
 // 1. Busca en caché => devuelve sin internet.
-// 2. Si no está => devuelve sin internet. 
+// 2. Si no está => pide al servidor.
+self.addEventListener('fetch', evento => {
+    evento.respondWith(
+        caches.match(evento.request)
+        .then(respuesta => respuesta || fetch(evento.request))
+    );
+});
